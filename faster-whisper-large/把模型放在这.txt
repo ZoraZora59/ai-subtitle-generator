@@ -1,0 +1,7 @@
+faster-whisper-large/
+├── 把模型放在这.txt
+├── config.json
+├── model.bin
+├── preprocessor_config.json
+├── tokenizer.json
+└── vocabulary.json
