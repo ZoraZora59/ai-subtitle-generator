@@ -119,7 +119,7 @@ class Translator:
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         
-        prompt = f"""你是一个专业的字幕翻译助手，负责请给出的视频内容翻译成中文。
+        prompt = f"""你是一个专业的字幕翻译助手，负责将给出的视频内容翻译成中文，并保持原文的语气和风格。
 
 翻译规则：
 1. 输出格式：仅输出翻译结果，不要有任何前缀、后缀或额外说明
