@@ -49,4 +49,28 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          dist/main.exe 
+          dist/main.exe
+        body: |
+          # AI 字幕生成器
+
+          ## 使用说明
+
+          1. 下载并解压本程序
+          2. 下载模型文件：
+             - 访问 [Hugging Face](https://huggingface.co/guillaumekln/faster-whisper-large-v3)
+             - 下载 `faster-whisper-large-v3` 模型文件
+          3. 将模型文件解压到程序同目录下的 `faster-whisper-large` 文件夹中
+          4. 运行 `main.exe`
+
+          ## 目录结构
+          ```
+          ai-subtitle-generator/
+          ├── main.exe
+          └── faster-whisper-large/
+              └── [模型文件]
+          ```
+
+          ## 注意事项
+          - 首次运行可能需要等待模型加载
+          - 确保有足够的磁盘空间（模型文件约需要 3GB）
+          - 如遇到问题，请查看程序目录下的 `logs` 文件夹中的日志文件 
