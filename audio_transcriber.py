@@ -1,7 +1,5 @@
 import torch
 import os
-import whisper
-from faster_whisper import WhisperModel
 from utils.logger import logger
 
 class AudioTranscriber:
@@ -143,6 +141,7 @@ class AudioTranscriber:
             raise FileNotFoundError(f"音频文件不存在: {audio_path}")
             
         try:
+            from faster_whisper import WhisperModel
             logger.info(f"正在加载faster-whisper模型({self.model_path})到{self.device}设备，计算精度: {self.compute_type}")
             model = WhisperModel(
                 self.model_path, 

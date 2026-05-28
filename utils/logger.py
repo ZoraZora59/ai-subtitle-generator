@@ -24,9 +24,10 @@ def setup_logger():
     # 配置日志文件名（使用当前日期）
     log_file = f'logs/translation_{datetime.now().strftime("%Y%m%d")}.log'
     
-    # 创建日志记录器
-    logger = logging.getLogger()
+    # 创建命名日志记录器，避免污染root logger
+    logger = logging.getLogger('subtitle_generator')
     logger.setLevel(logging.INFO)
+    logger.propagate = False
     
     # 文件处理器，使用UTF-8编码
     file_handler = logging.FileHandler(log_file, encoding='utf-8')
@@ -51,7 +52,8 @@ def setup_logger():
     ui_handler = UIHandler()
     ui_handler.setFormatter(logging.Formatter('%(levelname)s: %(message)s'))
     logger.addHandler(ui_handler)
-    
+
+    logger.ui_handler = ui_handler
     return logger
 
 # 创建全局日志记录器实例

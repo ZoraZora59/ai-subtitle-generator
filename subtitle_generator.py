@@ -69,17 +69,18 @@ class SubtitleGenerator:
     def _format_time(seconds):
         """
         将秒数转换为SRT格式的时间码 (HH:MM:SS,mmm)
-        
+
         Args:
             seconds (float): 秒数
-            
+
         Returns:
             str: 格式化的时间码
         """
         td = timedelta(seconds=seconds)
-        hours = td.seconds // 3600
-        minutes = (td.seconds % 3600) // 60
-        seconds = td.seconds % 60
+        total_seconds = int(td.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        secs = total_seconds % 60
         milliseconds = int(td.microseconds / 1000)
-        
-        return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
+
+        return f"{hours:02d}:{minutes:02d}:{secs:02d},{milliseconds:03d}"

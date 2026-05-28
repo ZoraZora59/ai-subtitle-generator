@@ -22,12 +22,8 @@ def exception_hook(exctype, value, traceback):
         error_box.setDetailedText("详细错误信息已记录到日志文件中。")
         error_box.exec_()
     
-    # 如果在主线程中，直接显示对话框
     if QApplication.instance() is not None:
         show_error_dialog()
-    else:
-        # 如果在其他线程中，将对话框显示推迟到主线程
-        QApplication.instance().processEvents()
 
 def main():
     """

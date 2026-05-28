@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
         
         # 连接日志信号
         from utils.logger import logger
-        logger.handlers[-1].signal_emitter.log_signal.connect(self.update_log)
+        logger.ui_handler.signal_emitter.log_signal.connect(self.update_log)
     
     def detect_ollama_models(self):
         """
@@ -179,7 +179,7 @@ class MainWindow(QMainWindow):
             self.ollama_model_combo.clear()
             self.ollama_model_combo.addItems(['qwen:7b', 'qwen:14b', 'llama2:7b', 'llama2:13b', 'yi:6b', 'yi:34b'])
             self.translation_combo.setEnabled(False)
-            self.translation_combo.setToolTip("检测Ollama模型时出错: {str(e)}")
+            self.translation_combo.setToolTip(f"检测Ollama模型时出错: {str(e)}")
             self.ollama_model_combo.setEnabled(False)
             return False
             
@@ -318,13 +318,9 @@ class MainWindow(QMainWindow):
         self.translated_text.verticalScrollBar().setSingleStep(1)  # 设置单步滚动为1行
         right_layout.addWidget(self.translated_text)
         
-        # 连接滚动条信号
-        self.original_text.verticalScrollBar().valueChanged.connect(
-            lambda value: self.translated_text.verticalScrollBar().setValue(value)
-        )
-        self.translated_text.verticalScrollBar().valueChanged.connect(
-            lambda value: self.original_text.verticalScrollBar().setValue(value)
-        )
+        # 连接滚动条信号（避免递归）
+        self.original_text.verticalScrollBar().valueChanged.connect(self._sync_scroll_to_translated)
+        self.translated_text.verticalScrollBar().valueChanged.connect(self._sync_scroll_to_original)
         
         # 添加到水平布局
         text_layout.addLayout(left_layout)
@@ -655,6 +651,18 @@ class MainWindow(QMainWindow):
         else:
             self.use_translation_checkbox.setEnabled(True)
             self.ollama_model_combo.setEnabled(True)
+
+    def _sync_scroll_to_translated(self, value):
+        bar = self.translated_text.verticalScrollBar()
+        bar.blockSignals(True)
+        bar.setValue(value)
+        bar.blockSignals(False)
+
+    def _sync_scroll_to_original(self, value):
+        bar = self.original_text.verticalScrollBar()
+        bar.blockSignals(True)
+        bar.setValue(value)
+        bar.blockSignals(False)
 
     def format_timestamp(self, seconds):
         """
